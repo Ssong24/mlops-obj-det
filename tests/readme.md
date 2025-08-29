@@ -1,20 +1,54 @@
-# Unit test
-## Goal
-Test individual pieces of code independently. For your project, typical unit tests include:
 
-- Training function (yolo train)
-    - Check that the function runs without errors for a few epochs on a tiny dataset.
+# Test Suite for MLOps Mini Pipeline
 
-- MLflow logging
-    - Ensure metrics and artifacts are correctly logged.
+This folder contains unit and smoke tests for the YOLO-based MLOps pipeline, including training, inference, MLflow logging, and Prefect flow execution.
 
-- Prefect tasks
-    - Test that tasks (run_training(), test_inference()) can execute independently.
+---
 
+## Unit Tests
 
-# Smoke test
-## Goal
-Quick, end-to-end checks to make sure the pipeline "runs without crashing".
-- Run all tasts in Prefect flow with tiny settings (like 1 epoch, small dataset).
-- Ensure MLflow logging and FastAPI prediction work.
+### Purpose
+
+Unit tests verify that individual components of the pipeline work correctly.  
+
+### What to Check
+
+- **YOLO Training**  
+  Ensure that the model can start training without errors.
+  ```bash
+  docker compose run --rm train
+  ```
+
+- **MLflow Logging**
+  Confirm that MLflow logs the training run.
+  Access the UI at `http://localhost:5001/`
+
+### Run Unit Tests
+
+```bash
+pytest -s tests/unit/
+```
+
+---
+
+## Smoke Tests
+
+### Purpose
+
+Smoke tests verify that the **entire pipeline** runs correctly from end to end.
+
+### What to Check
+
+* **Prefect Flow Execution**
+  Confirm that the `mlops_flow()` works as expected:
+
+  1. `run_training()` - trains the YOLO model.
+  2. `wait_for_infer()` - waits for the FastAPI inference server to be ready.
+  3. `test_inference()` - sends a sample image to the `/predict` endpoint and checks the prediction results.
+
+### Run Smoke Tests
+
+```bash
+pytest -m smoke
+```
 
