@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+ultralytics
+mlflow
+prefect
+Pillow
+pytest

@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv/
+
+# Conda
+*.conda
+*.env
+
+# Docker
+*.log
+mlflow/mlartifacts/
+weights/
+datasets/
+
+# IDEs
+.vscode/
+.idea/

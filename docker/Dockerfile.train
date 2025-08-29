@@ -1,0 +1,16 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+# install system dependencies needed by OpenCV
+RUN apt-get update && apt-get install -y \
+    git curl unzip \
+    libgl1 libglib2.0-0 \
+ && rm -rf /var/lib/apt/lists/*
+
+# install ultralytics
+RUN pip install --no-cache-dir ultralytics mlflow
+
+COPY data/coco128.yaml /app/data/
+
+# mount dataset at /datasets when running
+CMD ["yolo", "train", "model=yolov8n.pt", "data=data/coco-val2017.yaml", "epochs=5", "imgsz=640"]

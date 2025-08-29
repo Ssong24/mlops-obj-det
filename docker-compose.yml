@@ -1,0 +1,48 @@
+networks:
+  mlops:
+    name: mlops
+
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:latest
+    container_name: mlflow
+    command: >
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri sqlite:////db/mlflow.db
+      --default-artifact-root /mlartifacts
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./mlflow/db:/db
+      - ./mlflow/mlartifacts:/mlartifacts
+    restart: unless-stopped
+    networks: [mlops]
+
+  # (Optional convenience) a runner you can call to train from compose
+  # You can remove this if you prefer `docker run ...` manually.
+
+  train:
+    image: yolo-train
+    depends_on: [mlflow]
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - MLFLOW_EXPERIMENT_NAME=yolo-experiments
+    volumes:
+      - ./datasets:/datasets
+      - ./data:/app/data
+      - ./weights:/app/weights
+      - ./mlflow/mlartifacts:/mlartifacts
+    command: bash -lc "yolo settings mlflow=True && yolo settings runs_dir=/mlartifacts/yolo-experiments && yolo settings weights_dir=/mlartifacts/yolo-experiments && yolo train model=/app/yolov8n.pt data=/app/data/coco128.yaml epochs=2 imgsz=640 project=/mlartifacts/yolo-experiments name=exp-mlflow exist_ok=True"
+
+    networks: [mlops]
+    
+  infer:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.infer
+    ports:
+      - "8000:8000"
+    depends_on:
+      - train
