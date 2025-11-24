@@ -1,0 +1,12 @@
+.git
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.log
+*.md
+venv/
+.env
+mlflow/mlartifacts/**/checkpoints/*
+mlflow/mlartifacts/**/events.out.tfevents.*

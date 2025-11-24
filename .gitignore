@@ -6,6 +6,13 @@ __pycache__/
 .env
 .venv/
 
+# Model weights
+*.pt
+*.onnx
+
+# security
+*.pem
+
 # Conda
 *.conda
 *.env
@@ -19,3 +26,10 @@ datasets/
 # IDEs
 .vscode/
 .idea/
+
+# Terraform
+terraform/
+terraform.tfstate
+terraform.tfstate.backup
+.terraform/
+__pycache__/
