@@ -1,0 +1,36 @@
+name: Terraform Deploy
+
+# Trigger the workflow on push to main branch
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write       # needed for OIDC
+  contents: read        # needed to read repo
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Configure AWS credentials using OIDC
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::111490975442:role/github-tf-role
+          aws-region: us-east-1
+
+      # Step 3: Run Terraform commands
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./terraform
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: ./terraform
