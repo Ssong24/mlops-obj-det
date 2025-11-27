@@ -11,7 +11,7 @@ permissions:
   contents: read        # needed to read repo
 
 jobs:
-  terraform:
+  terraform: # test
     runs-on: ubuntu-latest
 
     steps:
