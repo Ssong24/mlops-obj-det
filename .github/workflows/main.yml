@@ -22,15 +22,6 @@ jobs:
         with:
           audience: '${{ github.server_url }}/${{ github.repository_owner }}'
 
-  get-id-token:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-    steps:
-      - run: |
-          ID_TOKEN=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://demo" | jq -r .value)
-          echo $ID_TOKEN | base64
-
 
   terraform: # test
     runs-on: ubuntu-latest
@@ -47,6 +38,7 @@ jobs:
           role-to-assume: arn:aws:iam::111490975442:role/github-tf-role
           role-session-name: github-actions
           aws-region: us-east-1
+          audience: https://github.com/Ssong24  # ADD THIS LINE
 
       - name: Verify AWS Identity
         run: aws sts get-caller-identity
