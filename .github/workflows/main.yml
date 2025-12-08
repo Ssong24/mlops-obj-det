@@ -18,10 +18,10 @@ jobs:
     name: A test of the oidc debugger
     steps:
       - name: Debug OIDC Claims
-        uses: github/actions-oidc-debugger@main
+        uses: github/actions-oidc-debugger@2e9ba5d3f4bebaad1f91a2cede055115738b7ae8
         with:
           audience: '${{ github.server_url }}/${{ github.repository_owner }}'
-          
+
   get-id-token:
     runs-on: ubuntu-latest
     permissions:
