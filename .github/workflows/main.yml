@@ -10,6 +10,16 @@ permissions:
   contents: read        # needed to read repo
 
 jobs:
+  get-id-token:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - run: |
+          ID_TOKEN=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://demo" | jq -r .value)
+          echo $ID_TOKEN | base64
+
+
   terraform: # test
     runs-on: ubuntu-latest
 
