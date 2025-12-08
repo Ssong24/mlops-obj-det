@@ -16,11 +16,11 @@ jobs:
     steps:
       # Step 1: Checkout code
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Step 2: Configure AWS credentials using OIDC
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::111490975442:role/github-tf-role
           role-session-name: github-actions
@@ -28,7 +28,7 @@ jobs:
 
       - name: Verify AWS Identity
         run: aws sts get-caller-identity
-        
+
       # Step 3: Run Terraform commands
       - name: Terraform Init
         run: terraform init
