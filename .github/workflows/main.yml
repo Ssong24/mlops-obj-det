@@ -43,7 +43,13 @@ jobs:
       - name: Verify AWS Identity
         run: aws sts get-caller-identity
 
-      # Step 3: Run Terraform commands
+      # Step 3: Setup Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.0 # Specify your desired version
+
+      # Step 4: Run Terraform commands
       - name: Terraform Init
         run: terraform init
         working-directory: ./terraform
