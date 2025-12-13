@@ -1,5 +1,4 @@
 name: Terraform Deploy
-
 # Trigger the workflow on push to main branch
 on:
   push:
@@ -25,7 +24,6 @@ jobs:
 
   terraform: # test
     runs-on: ubuntu-latest
-
     steps:
       # Step 1: Checkout code
       - name: Checkout repository
@@ -38,8 +36,8 @@ jobs:
           role-to-assume: arn:aws:iam::111490975442:role/github-tf-role
           role-session-name: github-actions
           aws-region: us-east-1
+          # No audience specified - will use default sts.amazonaws.com
           
-
       - name: Verify AWS Identity
         run: aws sts get-caller-identity
 
@@ -57,3 +55,14 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
         working-directory: ./terraform
+        env:
+          TF_VAR_aws_region: "us-east-1"
+          TF_VAR_s3_bucket_name: ${{ secrets.S3_BUCKET_NAME }}
+          TF_VAR_ec2_key_name: ${{ secrets.EC2_KEY_NAME }}
+          TF_VAR_ec2_public_key: ${{ secrets.EC2_PUBLIC_KEY }}
+          TF_VAR_ec2_instance_type: "t3.micro"
+          
+          # Optional: only add these if needed
+          # TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
+          # TF_VAR_certificate_arn: ${{ secrets.CERTIFICATE_ARN }}
+

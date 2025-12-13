@@ -1,7 +1,7 @@
 provider "aws" {
   region     = var.aws_region
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
+  # AWS credentials are provided via OIDC authentication in GitHub Actions
+  # No need for access_key and secret_key
 }
 
 # -------------------------
@@ -15,7 +15,7 @@ resource "aws_s3_bucket" "mlflow_bucket" {
 # Create a new EC2 key pair
 resource "aws_key_pair" "mlops_key" {
   key_name   = var.ec2_key_name # e.g. "mlops-keypair"
-  public_key = file(pathexpand("~/.ssh/mlops-keypair.pub"))
+  public_key = var.ec2_public_key
 
 }
 
