@@ -142,20 +142,20 @@ resource "aws_security_group" "sg" {
 
 
 # IAM Role for EC2
-
 resource "aws_iam_role" "ec2_role" {
-  assume_role_policy = 
-  {
+  name = "mlops-ec2-role"
+  assume_role_policy = jsonencode ({
     "Version": "2012-10-17",
     "Statement": [
       {
         "Action": "sts:AssumeRole",
-        "Principal": { "Service": "ec2.amazonaws.com" },
+        "Principal": { 
+          "Service": "ec2.amazonaws.com" 
+          },
         "Effect": "Allow"
       }
     ]
-  }
-
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "attach_ecr" {
@@ -206,8 +206,7 @@ resource "aws_ecr_repository" "yolo_repo" {
 resource "aws_ecr_lifecycle_policy" "mlops_policy" {
   repository = aws_ecr_repository.yolo_repo.name
 
-  policy = 
-  {
+  policy = jsonencode({
     "rules": [
       {
         "rulePriority": 1,
@@ -222,6 +221,6 @@ resource "aws_ecr_lifecycle_policy" "mlops_policy" {
         }
       }
     ]
-  }
+  })
   
 }
