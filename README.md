@@ -51,8 +51,9 @@ project/
 ### 1. Clone repository
 
 ```bash
-git clone <your_repo_url>
-cd project
+git clone git@github.com:Ssong24/mlops-obj-det.git
+cd mlops-obj-det
+
 ```
 
 ### 2. Create Conda environment
