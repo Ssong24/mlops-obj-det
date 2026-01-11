@@ -150,7 +150,7 @@ resource "aws_security_group" "sg" {
   }
 }
 
- 
+  
 # IAM Role for EC2
 resource "aws_iam_role" "ec2_role" {
   name = "mlops-ec2-role"
