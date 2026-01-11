@@ -145,7 +145,6 @@ pytest -m smoke
   3.  Trigger inference endpoint
 
 
-
 ---
 
 ## **Reproducibility**
