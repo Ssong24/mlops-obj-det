@@ -1,3 +1,13 @@
+
+terraform {
+  backend "s3" {
+    bucket         = "mlops-terraform-state-song-2026"
+    key            = "mlops/terraform.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
+  }
+}
+
 provider "aws" {
   region     = var.aws_region
   # AWS credentials are provided via OIDC authentication in GitHub Actions
